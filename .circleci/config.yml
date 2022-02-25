@@ -19,7 +19,7 @@ jobs:
     steps:
       - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
       - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
-      - run: aws rds describe-db-instances --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds
+      - run: while DB_INSTANCE_REACH_STATUS=$(aws rds describe-db-instances --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds --output text --query 'DBInstances[*].DBInstanceStatus'); test "$DB_INSTANCE_REACH_STATUS" != "available"; do sleep 5; echo -n '.'; done
   # start-ec2: 
   #   docker:   
   #     - image: cibuilds/aws:1.16.1 
@@ -133,8 +133,10 @@ workflows:
   version: 2
   build-project: 
     jobs:
-      # - create-RDS
-      - check-RDS-status
+      - create-RDS 
+      - check-RDS-status:
+          requires:
+            - create-RDS
       # - start-ec2:
       #     filters:
       #         branches:
