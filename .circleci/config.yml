@@ -12,6 +12,14 @@ jobs:
       - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
       - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
       - run: aws rds create-db-instance --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds --db-instance-class db.t3.micro --engine mysql --master-username admin --master-user-password secret99 --allocated-storage 20 --publicly-accessible
+    
+  check-RDS-status:
+    docker:
+      - image: cibuilds/aws:1.16.1
+    steps:
+      - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
+      - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
+      - run: aws rds describe-db-instances --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds
   # start-ec2: 
   #   docker:   
   #     - image: cibuilds/aws:1.16.1 
@@ -125,7 +133,8 @@ workflows:
   version: 2
   build-project: 
     jobs:
-      - create-RDS
+      # - create-RDS
+      - check-RDS-status
       # - start-ec2:
       #     filters:
       #         branches:
