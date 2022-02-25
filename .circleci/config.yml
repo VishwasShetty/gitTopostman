@@ -27,7 +27,7 @@ jobs:
     steps:
       - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
       - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
-      - run: aws rds delete-db-instance --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds --skip-final-snapshot --delete-automated-backups
+      - run: aws rds delete-db-instance --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds --delete-automated-backups --skip-final-snapshot
   
   # start-ec2: 
   #   docker:   
