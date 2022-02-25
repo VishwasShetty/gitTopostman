@@ -11,14 +11,7 @@ jobs:
     steps:
       - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
       - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
-      - run: aws rds create-db-instance \
-            --db-instance-identifier dev-test-rds \
-            --db-instance-class db.t3.micro \
-            --engine mysql \
-            --master-username admin \
-            --master-user-password secret99 \
-            --allocated-storage 20 \
-            --publicly-accessible
+      - run: aws rds create-db-instance --db-instance-identifier dev-test-rds --db-instance-class db.t3.micro --engine mysql --master-username admin --master-user-password secret99 --allocated-storage 20 --publicly-accessible
   # start-ec2: 
   #   docker:   
   #     - image: cibuilds/aws:1.16.1 
