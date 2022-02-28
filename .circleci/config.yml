@@ -41,10 +41,7 @@ jobs:
               mysql -h $HOST -u admin -p rootadmin dev-test-rds < sqlchanges.sql
               exit
              
-            # sed sqlchanges.sql
-            # echo "$DB_INSTANCE_REACH_STATUS"
-            # sudo apt-get install default-mysql-client 
-            # mysql -h 127.0.0.1 -u user -p passw0rd dev-test-rds < ./sqlchanges.sql
+          
   # delete-RDS:
   #   docker:
   #     - image: cibuilds/aws:1.16.1
