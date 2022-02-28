@@ -11,7 +11,7 @@ jobs:
     steps:
       - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
       - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
-      - run: aws rds create-db-instance --region $AWS_EC2_REGION  --db-instance-identifier dev-test-rds --db-instance-class db.t3.micro --engine mysql --master-username admin --master-user-password secret99 --allocated-storage 20 --publicly-accessible --backup-retention-period 0
+      - run: aws rds create-db-instance --region $AWS_EC2_REGION  --db-instance-identifier dev-test-rds --db-instance-class db.t3.micro --engine mysql --master-username admin --master-user-password rootadmin --allocated-storage 20 --publicly-accessible --backup-retention-period 0
     
   check-RDS-status:
     docker:
@@ -21,13 +21,29 @@ jobs:
       - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
       - run: while DB_INSTANCE_REACH_STATUS=$(aws rds describe-db-instances --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds --output text --query 'DBInstances[*].DBInstanceStatus'); test "$DB_INSTANCE_REACH_STATUS" != "available"; do sleep 5; echo -n '.'; done
   
-  delete-RDS:
+  import-data-to-RDS:
     docker:
-      - image: cibuilds/aws:1.16.1
+      - image: cimg/mysql:8.0
+    # environment:
+    #     MYSQL_ROOT_PASSWORD: rootadmin
+    #     MYSQL_DATABASE: dev-test-rds
+    #     MYSQL_USER: admin
+    #     MYSQL_PASSWORD: rootadmin
     steps:
-      - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
-      - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
-      - run: aws rds delete-db-instance --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds  --skip-final-snapshot
+      - checkout
+      - run:
+          name: Install MySQL CLI; Import dummy data; run an example query
+          command: |
+            echo $DB_INSTANCE_REACH_STATUS
+            # sudo apt-get install default-mysql-client
+            # mysql -h 127.0.0.1 -u user -p passw0rd dev-test-rds < sqlchanges.sql
+  # delete-RDS:
+  #   docker:
+  #     - image: cibuilds/aws:1.16.1
+  #   steps:
+  #     - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
+  #     - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
+  #     - run: aws rds delete-db-instance --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds  --skip-final-snapshot
   
   # start-ec2: 
   #   docker:   
@@ -146,10 +162,13 @@ workflows:
       - check-RDS-status:
           requires:
             - create-RDS
-      
-      - delete-RDS:
+      - import-data-to-RDS:
           requires:
             - check-RDS-status
+      
+      # - delete-RDS:
+      #     requires:
+      #       - check-RDS-status
       # - start-ec2:
       #     filters:
       #         branches:
