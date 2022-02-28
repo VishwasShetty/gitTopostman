@@ -38,8 +38,11 @@ jobs:
           command: |
             ssh -o StrictHostKeyChecking=no $USER@$IP \
               sh deploy.sh \
-              mysql --host=$HOST --user=admin --password rootadmin dev-test-rds < sqlchanges.sql \
+              mysql --host=$HOST --user=admin --password rootadmin \
+               CREATE DATABASE smartjar;
+               exit;
               exit
+        # mysql --host=$HOST --user=admin --password rootadmin dev-test-rds < sqlchanges.sql \
              
           
   # delete-RDS:
