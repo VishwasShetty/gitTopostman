@@ -38,7 +38,7 @@ jobs:
              
             # sed sqlchanges.sql
             # echo "$DB_INSTANCE_REACH_STATUS"
-            # sudo apt-get install default-mysql-client
+            # sudo apt-get install default-mysql-client 
             # mysql -h 127.0.0.1 -u user -p passw0rd dev-test-rds < ./sqlchanges.sql
   # delete-RDS:
   #   docker:
