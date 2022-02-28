@@ -37,7 +37,6 @@ jobs:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
             ssh -o StrictHostKeyChecking=no $USER@$IP \
-              sh deploy.sh \
               mysql --host=$HOST --user=admin --password rootadmin \
                CREATE DATABASE smartjar;
                exit;
