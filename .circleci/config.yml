@@ -20,26 +20,26 @@ jobs:
       - run: aws configure set aws_access_key_id $AWS_EC2_ACCESS_KEY
       - run: aws configure set aws_secret_access_key $AWS_EC2_SECRET_KEY
       - run: while DB_INSTANCE_REACH_STATUS=$(aws rds describe-db-instances --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds --output text --query 'DBInstances[*].DBInstanceStatus'); test "$DB_INSTANCE_REACH_STATUS" != "available"; do sleep 5; echo -n '.'; done
-      - run: echo "export TAGANCH=$(aws rds describe-db-instances --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds --output text --query 'DBInstances[*].DBInstanceStatus')" >> $BASH_ENV
-  
+      - run: echo "export HOST=$(aws rds describe-db-instances --region $AWS_EC2_REGION --db-instance-identifier dev-test-rds --output text --query 'DBInstances[*].Endpoint[*].Address')" >> $BASH_ENV
+      
 
-  # import-data-to-RDS:
-  #   docker:
-  #     - image: cimg/mysql:8.0
-  #   # environment:
-  #   #     MYSQL_ROOT_PASSWORD: rootadmin
-  #   #     MYSQL_DATABASE: dev-test-rds
-  #   #     MYSQL_USER: admin
-  #   #     MYSQL_PASSWORD: rootadmin
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Install MySQL CLI; Import dummy data; run an example query
-  #         command: |
-  #           ssh -o StrictHostKeyChecking=no $USER@$IP \
-  #             sh deploy.sh \
-
-  #             exit
+  import-data-to-RDS:
+    docker:
+      - image: cimg/mysql:8.0
+    # environment:
+    #     MYSQL_ROOT_PASSWORD: rootadmin
+    #     MYSQL_DATABASE: dev-test-rds
+    #     MYSQL_USER: admin
+    #     MYSQL_PASSWORD: rootadmin
+    steps:
+      - checkout
+      - run:
+          name: Install MySQL CLI; Import dummy data; run an example query
+          command: |
+            ssh -o StrictHostKeyChecking=no $USER@$IP \
+              sh deploy.sh \
+              mysql -h $HOST -u admin -p rootadmin dev-test-rds < sqlchanges.sql
+              exit
              
             # sed sqlchanges.sql
             # echo "$DB_INSTANCE_REACH_STATUS"
@@ -170,9 +170,9 @@ workflows:
       - check-RDS-status
       #     requires:
       #       - create-RDS
-      # - import-data-to-RDS
-          # requires:
-          #   - check-RDS-status
+      - import-data-to-RDS:
+          requires:
+            - check-RDS-status
       
       # - delete-RDS:
       #     requires:
