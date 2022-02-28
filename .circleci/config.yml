@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
-            ssh -i -oStrictHostKeyChecking=no -v $USER@$IP
+            ssh -i ./Flocco-CI-CD.pem -oStrictHostKeyChecking=no -v $USER@$IP
             # sed sqlchanges.sql
             # echo "$DB_INSTANCE_REACH_STATUS"
             # sudo apt-get install default-mysql-client
