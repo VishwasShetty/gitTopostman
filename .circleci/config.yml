@@ -38,7 +38,7 @@ jobs:
           command: |
             ssh -o StrictHostKeyChecking=no $USER@$IP \
               sh deploy.sh \
-              mysql -h $HOST -u admin -p rootadmin dev-test-rds < sqlchanges.sql
+              mysql -h $HOST -u admin -p rootadmin dev-test-rds < sqlchanges.sql \
               exit
              
           
