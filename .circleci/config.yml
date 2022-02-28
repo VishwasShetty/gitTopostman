@@ -35,6 +35,7 @@ jobs:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
             ssh -o StrictHostKeyChecking=no $USER@$IP \
+              exit
              
             # sed sqlchanges.sql
             # echo "$DB_INSTANCE_REACH_STATUS"
