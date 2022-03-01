@@ -31,7 +31,7 @@ jobs:
       - run:
           command: |
             ssh -o StrictHostKeyChecking=no $USER@$IP \ 
-              sh sqldependencies.sh \
+              sh sqldep.sh \
               exit 
             # mysql --host=$HOST --user=admin --password rootadmin test < flocco.sql  
               # exit
