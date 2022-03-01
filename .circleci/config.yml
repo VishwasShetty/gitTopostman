@@ -37,7 +37,8 @@ jobs:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
             ssh -o StrictHostKeyChecking=no $USER@$IP \
-              mysql --host=$HOST --user=admin --password rootadmin < createDB.sql 
+              sh de.sh
+              # mysql --host=$HOST --user=admin --password rootadmin < createDB.sql 
               exit
         # mysql --host=$HOST --user=admin --password rootadmin dev-test-rds < sqlchanges.sql \
              
