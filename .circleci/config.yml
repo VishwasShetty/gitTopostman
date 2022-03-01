@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
-            ssh -o StrictHostKeyChecking=no $USER@$IP \
+            ssh -o StrictHostKeyChecking=no $USER@$IP \ 
               sh sqldependencies.sh \
               exit
             # mysql --host=$HOST --user=admin --password rootadmin test < flocco.sql  
