@@ -32,13 +32,12 @@ jobs:
     #     MYSQL_USER: admin
     #     MYSQL_PASSWORD: rootadmin
     steps:
-      - checkout
+      - checkout 
       - run:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
             ssh -o StrictHostKeyChecking=no $USER@$IP \
-              sh de.sh
-              # mysql --host=$HOST --user=admin --password rootadmin < createDB.sql 
+              mysql --host=$HOST --user=admin --password rootadmin < createDB.sql 
               exit
         # mysql --host=$HOST --user=admin --password rootadmin dev-test-rds < sqlchanges.sql \
              
