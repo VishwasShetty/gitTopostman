@@ -216,7 +216,7 @@ workflows:
       #       - newman-collection-run-failuer1  
       # # # - deploy: 
       # # #     requires:
-      # # #       - newman-collection-run 
+      # # #       - newman-collection-run  
       
       # # # - newman-collection-run-test:
       # # #     requires:
