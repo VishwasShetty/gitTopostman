@@ -184,7 +184,7 @@ workflows:
       #             - master
  
       # - check-for-ec2-status:
-      #     requires:
+      #     requires: 
       #       - start-ec2
       #     filters:
       #       branches:
