@@ -36,8 +36,10 @@ jobs:
       - run:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
-            # ssh -o StrictHostKeyChecking=no $USER@$IP \
-            mysql --host=$HOST --user=admin --password rootadmin test < flocco.sql 
+            sudo apt-get install default-mysql-client
+            mysql -h dev-test-rds.cpxri5cxvkz5.ap-south-1.rds.amazonaws.com -u admin -p rootadmin test_db < flocco.sql
+            # # ssh -o StrictHostKeyChecking=no $USER@$IP \
+            # mysql --host=$HOST --user=admin --password rootadmin test < flocco.sql 
               # exit
         # mysql --host=$HOST --user=admin --password rootadmin dev-test-rds < sqlchanges.sql \
              
