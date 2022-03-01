@@ -30,8 +30,8 @@ jobs:
       - checkout 
       - run:
           command: |
-            ssh -o StrictHostKeyChecking=no $USER@$IP \ 
-              sh deploy.sh \
+            ssh -o StrictHostKeyChecking=no $USER@$IP \
+              sh deploy.sh  
               exit 
             # mysql --host=$HOST --user=admin --password rootadmin test < flocco.sql  
               # exit
